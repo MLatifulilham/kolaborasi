@@ -205,3 +205,57 @@ void displayCourseSummary() {
     }
     cout << "\nTotal Biaya: " << grandTotal << endl;
 }
+
+// === Commit 7: Penyimpanan ke file ===
+void saveToFile() {
+    ofstream outFile("courses.txt");
+    if (!outFile) {
+        cout << "Gagal membuka file untuk penyimpanan!\n";
+        return;
+    }
+    
+    for (const auto& course : courses) {
+        outFile << course.package_name << "|" 
+                << course.type << "|" 
+                << course.meetings << "|" 
+                << course.session_duration << "|" 
+                << course.price_per_meeting << "|" 
+                << course.registered_students << "|" 
+                << course.payment_status << endl;
+    }
+    outFile.close();
+    cout << "Data berhasil disimpan ke file!\n";
+}
+
+void loadFromFile() {
+    ifstream inFile("courses.txt");
+    if (!inFile) {
+        cout << "File courses tidak ditemukan!\n";
+        return;
+    }
+    
+    courses.clear();
+    string line;
+    while (getline(inFile, line)) {
+        Course course;
+        size_t pos = 0;
+        string token;
+        int field = 0;
+        
+        while ((pos = line.find("|")) != string::npos) {
+            token = line.substr(0, pos);
+            if (field == 0) course.package_name = token;
+            else if (field == 1) course.type = token;
+            else if (field == 2) course.meetings = stoi(token);
+            else if (field == 3) course.session_duration = stoi(token);
+            else if (field == 4) course.price_per_meeting = stod(token);
+            else if (field == 5) course.registered_students = stoi(token);
+            else if (field == 6) course.payment_status = token;
+            line.erase(0, pos + 1);
+            field++;
+        }
+        courses.push_back(course);
+    }
+    inFile.close();
+    cout << "Data berhasil dimuat dari file!\n";
+}
