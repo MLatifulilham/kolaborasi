@@ -40,3 +40,25 @@ void addCourse() {
     courses.push_back(newCourse);
     cout << "Paket kursus berhasil ditambahkan!\n";
 }
+
+// === Commit 2: Fungsi tampilkan daftar paket kursus ===
+void displayCourses() {
+    if (courses.empty()) {
+        cout << "\nTidak ada paket kursus!\n";
+        return;
+    }
+    cout << "\nDaftar Paket Kursus:\n";
+    cout << setw(20) << left << "Nama Paket" 
+         << setw(10) << "Tipe" 
+         << setw(15) << "Pertemuan" 
+         << setw(15) << "Durasi (mnt)" 
+         << setw(15) << "Harga/Pertemuan" << endl;
+    cout << string(75, '-') << endl;
+    for (const auto& course : courses) {
+        cout << setw(20) << left << course.package_name 
+             << setw(10) << course.type 
+             << setw(15) << course.meetings 
+             << setw(15) << course.session_duration 
+             << setw(15) << course.price_per_meeting << endl;
+    }
+}
