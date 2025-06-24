@@ -163,3 +163,45 @@ void deleteCourse() {
     }
     cout << "Paket kursus tidak ditemukan!\n";
 }
+
+
+// === Commit 6: Perhitungan total biaya dan diskon ===
+double calculateTotal() {
+    double total = 0;
+    for (const auto& course : courses) {
+        double subtotal = course.registered_students * course.meetings * course.price_per_meeting;
+        // Diskon 15% jika lebih dari 5 siswa untuk paket Kelas
+        if (course.type == "Kelas" && course.registered_students > 5) {
+            subtotal *= 0.85;
+        }
+        total += subtotal;
+    }
+    return total;
+}
+
+void displayCourseSummary() {
+    cout << "\nRingkasan Pendaftaran Kursus:\n";
+    cout << setw(20) << left << "Nama Paket" 
+         << setw(10) << "Tipe" 
+         << setw(15) << "Pendaftar" 
+         << setw(15) << "Total Sesi" 
+         << setw(15) << "Status Bayar" 
+         << setw(15) << "Subtotal" << endl;
+    cout << string(90, '-') << endl;
+    
+    double grandTotal = 0;
+    for (const auto& course : courses) {
+        if (course.registered_students > 0) {
+            double subtotal = course.registered_students * course.meetings * course.price_per_meeting;
+            if (course.type == "Kelas" && course.registered_students > 5) subtotal *= 0.85;
+            grandTotal += subtotal;
+            cout << setw(20) << left << course.package_name 
+                 << setw(10) << course.type 
+                 << setw(15) << course.registered_students 
+                 << setw(15) << course.meetings 
+                 << setw(15) << course.payment_status 
+                 << setw(15) << subtotal << endl;
+        }
+    }
+    cout << "\nTotal Biaya: " << grandTotal << endl;
+}
