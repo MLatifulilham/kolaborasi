@@ -82,3 +82,25 @@ void registerStudent() {
     }
     cout << "Paket kursus tidak ditemukan!\n";
 }
+
+// === Commit 4: Status pembayaran cicilan ===
+void updatePaymentStatus() {
+    string packageName;
+    cout << "\nMasukkan nama paket kursus untuk update status pembayaran: ";
+    cin.ignore();
+    getline(cin, packageName);
+    
+    for (auto& course : courses) {
+        if (course.package_name == packageName && course.registered_students > 0) {
+            cout << "Pilih status pembayaran (1: Lunas, 2: Cicilan, 3: Belum Dibayar): ";
+            int choice;
+            cin >> choice;
+            if (choice == 1) course.payment_status = "Lunas";
+            else if (choice == 2) course.payment_status = "Cicilan";
+            else course.payment_status = "Belum Dibayar";
+            cout << "Status pembayaran berhasil diperbarui!\n";
+            return;
+        }
+    }
+    cout << "Paket kursus tidak ditemukan atau belum ada pendaftar!\n";
+}
