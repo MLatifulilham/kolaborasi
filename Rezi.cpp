@@ -1,10 +1,12 @@
+// Pembukaan
 #include <iostream>
 #include <vector>
 #include <string>
 #include <iomanip>
 using namespace std;
 
-struct Course {
+struct Course
+{
     string package_name;
     string type;
     int meetings;
@@ -15,3 +17,13 @@ struct Course {
 };
 
 vector<Course> courses;
+
+// Fungsi-fungsi
+void addCourse();
+void displayCourses();
+void registerStudent();
+void updatePaymentStatus();
+void editCourse();
+void deleteCourse();
+void displayCourseSummary();
+double calculateTotal();
