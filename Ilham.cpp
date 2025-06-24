@@ -259,3 +259,95 @@ void loadFromFile() {
     inFile.close();
     cout << "Data berhasil dimuat dari file!\n";
 }
+// === Commit 7: Penyimpanan ke file ===
+void saveToFile() {
+    ofstream outFile("courses.txt");
+    if (!outFile) {
+        cout << "Gagal membuka file untuk penyimpanan!\n";
+        return;
+    }
+    
+    for (const auto& course : courses) {
+        outFile << course.package_name << "|" 
+                << course.type << "|" 
+                << course.meetings << "|" 
+                << course.session_duration << "|" 
+                << course.price_per_meeting << "|" 
+                << course.registered_students << "|" 
+                << course.payment_status << endl;
+    }
+    outFile.close();
+    cout << "Data berhasil disimpan ke file!\n";
+}
+
+void loadFromFile() {
+    ifstream inFile("courses.txt");
+    if (!inFile) {
+        cout << "File courses tidak ditemukan!\n";
+        return;
+    }
+    
+    courses.clear();
+    string line;
+    while (getline(inFile, line)) {
+        Course course;
+        size_t pos = 0;
+        string token;
+        int field = 0;
+        
+        while ((pos = line.find("|")) != string::npos) {
+            token = line.substr(0, pos);
+            if (field == 0) course.package_name = token;
+            else if (field == 1) course.type = token;
+            else if (field == 2) course.meetings = stoi(token);
+            else if (field == 3) course.session_duration = stoi(token);
+            else if (field == 4) course.price_per_meeting = stod(token);
+            else if (field == 5) course.registered_students = stoi(token);
+            else if (field == 6) course.payment_status = token;
+            line.erase(0, pos + 1);
+            field++;
+        }
+        courses.push_back(course);
+    }
+    inFile.close();
+    cout << "Data berhasil dimuat dari file!\n";
+}
+// == commit 8: Fungsi menu utama ==
+void displayMenu() {
+    cout << "\nSistem Administrasi Lembaga Kursus\n";
+    cout << "1. Tambah Paket Kursus\n";
+    cout << "2. Tampilkan Daftar Paket\n";
+    cout << "3. Daftarkan Siswa\n";
+    cout << "4. Update Status Pembayaran\n";
+    cout << "5. Edit Paket Kursus\n";
+    cout << "6. Hapus Paket Kursus\n";
+    cout << "7. Tampilkan Ringkasan Pendaftaran\n";
+    cout << "8. Simpan ke File\n";
+    cout << "9. Muat dari File\n";
+    cout << "0. Keluar\n";
+    cout << "Pilih opsi: ";
+}
+
+int main() {
+    int choice;
+    do {
+        displayMenu();
+        cin >> choice;
+        
+        switch (choice) {
+            case 1: addCourse(); break;
+            case 2: displayCourses(); break;
+            case 3: registerStudent(); break;
+            case 4: updatePaymentStatus(); break;
+            case 5: editCourse(); break;
+            case 6: deleteCourse(); break;
+            case 7: displayCourseSummary(); break;
+            case 8: saveToFile(); break;
+            case 9: loadFromFile(); break;
+            case 0: cout << "Terima kasih!\n"; break;
+            default: cout << "Pilihan tidak valid!\n";
+        }
+    } while (choice != 0);
+
+    return 0;
+}
