@@ -104,3 +104,62 @@ void updatePaymentStatus() {
     }
     cout << "Paket kursus tidak ditemukan atau belum ada pendaftar!\n";
 }
+
+
+// === Commit 5: Edit dan hapus paket ===
+void editCourse() {
+    string packageName;
+    cout << "\nMasukkan nama paket kursus yang akan diedit: ";
+    cin.ignore();
+    getline(cin, packageName);
+    
+    for (auto& course : courses) {
+        if (course.package_name == packageName) {
+            cout << "Masukkan nama paket baru (kosongkan jika tidak diubah): ";
+            string newName;
+            getline(cin, newName);
+            if (!newName.empty()) course.package_name = newName;
+            
+            cout << "Pilih tipe paket baru (0: Tidak diubah, 1: Privat, 2: Kelas): ";
+            int typeChoice;
+            cin >> typeChoice;
+            if (typeChoice == 1) course.type = "Privat";
+            else if (typeChoice == 2) course.type = "Kelas";
+            
+            cout << "Masukkan jumlah pertemuan baru (0 jika tidak diubah): ";
+            int newMeetings;
+            cin >> newMeetings;
+            if (newMeetings > 0) course.meetings = newMeetings;
+            
+            cout << "Masukkan durasi per sesi baru (0 jika tidak diubah): ";
+            int newDuration;
+            cin >> newDuration;
+            if (newDuration > 0) course.session_duration = newDuration;
+            
+            cout << "Masukkan harga per pertemuan baru (0 jika tidak diubah): ";
+            double newPrice;
+            cin >> newPrice;
+            if (newPrice > 0) course.price_per_meeting = newPrice;
+            
+            cout << "Data paket kursus berhasil diperbarui!\n";
+            return;
+        }
+    }
+    cout << "Paket kursus tidak ditemukan!\n";
+}
+
+void deleteCourse() {
+    string packageName;
+    cout << "\nMasukkan nama paket kursus yang akan dihapus: ";
+    cin.ignore();
+    getline(cin, packageName);
+    
+    for (auto it = courses.begin(); it != courses.end(); ++it) {
+        if (it->package_name == packageName) {
+            courses.erase(it);
+            cout << "Paket kursus berhasil dihapus!\n";
+            return;
+        }
+    }
+    cout << "Paket kursus tidak ditemukan!\n";
+}
